@@ -25,9 +25,10 @@ namespace Threads
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Controller.BigMethodThatDoesAlotOfThings();
+            await Controller.Wrapper();
+            StartButton.Content = "You slut.";
         }
     }
 }
