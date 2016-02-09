@@ -1,0 +1,13 @@
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\bin\Debug\Threads.exe.config
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\bin\Debug\Threads.exe
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\bin\Debug\Threads.pdb
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads.csprojResolveAssemblyReference.cache
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\MainWindow.baml
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\MainWindow.g.cs
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\App.g.cs
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads_MarkupCompile.cache
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads.g.resources
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads.Properties.Resources.resources
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads.csproj.GenerateResource.Cache
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads.exe
+C:\Users\Zoli\EAL_CompSci\Small_Programs\Thread\Threads\Threads\obj\Debug\Threads.pdb
