@@ -18,15 +18,15 @@ namespace Generics {
                 count = 0;
             }
         }
-        public int Count { get
+        public int Count {
+            get
             {
                 return count;
             }
         }
-        
         public void Add(T elm) {
             if (elm != null && count<myArray.Length) {
-                myArray[count + 1] = elm;
+                myArray[count] = elm;
                 ++count;
             }
         }
