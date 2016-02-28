@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ThreadSkiing {
     class Skiier {
-        public static int maxSkiiers = 5;
+        public static int maxSkiiers = 1;
         public int ID { get; set; }
         public int Speed { get; }
         public int ArrivalAtQueue { get; set; }

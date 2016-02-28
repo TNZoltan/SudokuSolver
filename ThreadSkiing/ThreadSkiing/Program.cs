@@ -46,9 +46,9 @@ namespace ThreadSkiing
                             if (queue.TryDequeue(out temp.people[i]))
                             {
                                 temp.actualPeople++;
-                                Console.WriteLine("Someone entered Cabin");
                             }
                         }
+                        Console.WriteLine("             "+temp.actualPeople + " skiers have entered a Cabin ");
                         lift.Enqueue(temp);
                         lastTime = timer;
                     }
@@ -63,7 +63,7 @@ namespace ThreadSkiing
                 lock (key)
                 {
                     Thread.Sleep(500);
-                    if (lift.IsEmpty == false && (timer % Cabin.cabinFrequency == 0) && lastTime != timer)
+                    if (lift.IsEmpty == false && (timer % Cabin.cabinFrequency == 0) && lastTime != timer && timer != Cabin.cabinLength)
                     {
                         Cabin temp;
                         lift.TryDequeue(out temp);
@@ -71,8 +71,7 @@ namespace ThreadSkiing
                         {
                             temp.people[i].ArrivalAtQueue = timer + temp.people[i].Speed;
                             piste.Add(/*(-1 * temp.people[i].Speed),*/ temp.people[i]);
-
-                            Console.WriteLine("Skiier left cabin and went ski,ingying?");
+                            Console.WriteLine("one went on the piste");
                         }
                         lastTime = timer;
                     }
@@ -81,6 +80,7 @@ namespace ThreadSkiing
         }
         static void pistesToQueue()
         {
+            int shouldremove = 0;
             int lastTime = -1;
             while (true)
             {
@@ -92,19 +92,24 @@ namespace ThreadSkiing
                         {
                             if (item.ArrivalAtQueue == timer)
                             {
+                                shouldremove++;
                                 queue.Enqueue(item);
-
                                 Console.WriteLine("Skiier has landed and entered Queue");
                             }
                         }
-                        piste.RemoveAll(skier => skier.ID > -1);
+
+                        //for (int i = 0; i < shouldremove; i++)
+                        //{
+                        //    piste.Remove(piste[i]);
+                        //}
+
                         lastTime = timer;
                     }
                 }
             }
         }
         static readonly object key = new object();
-        static volatile int timer = 0;
+        static volatile int timer = 4;
         static void time()
         {
             while (true)
