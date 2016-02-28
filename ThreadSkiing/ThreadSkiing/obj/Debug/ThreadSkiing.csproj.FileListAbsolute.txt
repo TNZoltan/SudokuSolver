@@ -1,0 +1,6 @@
+C:\Users\Zoli\EAL_CompSci\Exercises_GIT\ThreadSkiing\ThreadSkiing\bin\Debug\ThreadSkiing.exe.config
+C:\Users\Zoli\EAL_CompSci\Exercises_GIT\ThreadSkiing\ThreadSkiing\bin\Debug\ThreadSkiing.exe
+C:\Users\Zoli\EAL_CompSci\Exercises_GIT\ThreadSkiing\ThreadSkiing\bin\Debug\ThreadSkiing.pdb
+C:\Users\Zoli\EAL_CompSci\Exercises_GIT\ThreadSkiing\ThreadSkiing\obj\Debug\ThreadSkiing.csprojResolveAssemblyReference.cache
+C:\Users\Zoli\EAL_CompSci\Exercises_GIT\ThreadSkiing\ThreadSkiing\obj\Debug\ThreadSkiing.exe
+C:\Users\Zoli\EAL_CompSci\Exercises_GIT\ThreadSkiing\ThreadSkiing\obj\Debug\ThreadSkiing.pdb
