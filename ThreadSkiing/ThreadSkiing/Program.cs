@@ -12,13 +12,19 @@ namespace ThreadSkiing
 {
     class Program
     {
-        static ConcurrentQueue<Skiier> queue = new ConcurrentQueue<Skiier>(); //bunch of dudes waiting for bunch of cabins
-        static ConcurrentQueue<Cabin> lift = new ConcurrentQueue<Cabin>(); //bunch of cabins
+        static ConcurrentQueue<Skiier> queue = new ConcurrentQueue<Skiier>();
+        static ConcurrentQueue<Cabin> lift = new ConcurrentQueue<Cabin>();
         static List<Skiier> piste = new List<Skiier>();
+        static readonly object lockKey = new object();
+        static volatile int clock = 1;
+        static int[] printLift = new int[Cabin.MaxCabins / 2];
         static void Main(string[] args)
         {
-            for (int i = 0; i < Skiier.maxSkiiers; i++)
-            {
+            Console.WriteLine("Current settings\n");
+            Console.WriteLine("Number of cabins: {0} \nNumber of skiiers: {1}", Cabin.MaxCabins, Skiier.MaxSkiiers);
+            Console.WriteLine("Frequency of cabins: " + Cabin.CabinFrequency);
+            Thread.Sleep(3000);
+            for (int i = 0; i < Skiier.MaxSkiiers; i++){
                 Skiier skiier = new Skiier(i);
                 queue.Enqueue(skiier);
             }
@@ -28,97 +34,82 @@ namespace ThreadSkiing
             Thread T4 = new Thread(new ThreadStart(pistesToQueue));
             T1.Start(); T2.Start(); T3.Start(); T4.Start();
         }
-
-
-        static void queueToCabin()
-        {
+        static void queueToCabin(){
             int lastTime = -1;
-            while (true)
-            {
-                lock (key)
-                {
-                    if (timer % Cabin.cabinFrequency == 0 && lastTime != timer)
-                    {
-                        Console.WriteLine("New cabin going");
+            while (true){
+                lock (lockKey){
+                    if (clock % Cabin.CabinFrequency == 0 && lastTime != clock){
+                        Console.WriteLine("-New cabin going");
                         Cabin temp = new Cabin();
-                        for (int i = 0; i < 25; i++)
-                        {
-                            if (queue.TryDequeue(out temp.people[i]))
-                            {
-                                temp.actualPeople++;
+                        for (int i = 0; i < 25; i++){
+                            if (queue.TryDequeue(out temp.people[i])){
+                                temp.ActualPeople++;
                             }
                         }
-                        Console.WriteLine("             "+temp.actualPeople + " skiers have entered a Cabin ");
+                        Console.WriteLine("-" + temp.ActualPeople + " skiers have entered a Cabin ");
                         lift.Enqueue(temp);
-                        lastTime = timer;
+                        for (int i = printLift.Count()-1; i > 0; i--) {
+                            printLift[i] = printLift[i-1];
+                        }
+                        printLift[0] = temp.ActualPeople;
+                        lastTime = clock;
                     }
                 }
             }
         }
-        static void cabinToPistes()
-        {
+        static void cabinToPistes(){
             int lastTime = -1;
-            while (true)
-            {
-                lock (key)
-                {
-                    Thread.Sleep(500);
-                    if (lift.IsEmpty == false && (timer % Cabin.cabinFrequency == 0) && lastTime != timer && timer != Cabin.cabinLength)
-                    {
+            while (true){
+                lock (lockKey){
+                    if (!lift.IsEmpty && (clock % Cabin.CabinFrequency == 0) && lastTime != clock && (clock > Cabin.CabinLength+1)){
                         Cabin temp;
                         lift.TryDequeue(out temp);
-                        for (int i = 0; i < temp.actualPeople; i++)
-                        {
-                            temp.people[i].ArrivalAtQueue = timer + temp.people[i].Speed;
-                            piste.Add(/*(-1 * temp.people[i].Speed),*/ temp.people[i]);
-                            Console.WriteLine("one went on the piste");
+                        int removeCount = 0;
+                        for (int i = 0; i < temp.ActualPeople; i++){
+                            temp.people[i].ArrivalAtQueue = clock + temp.people[i].Speed;
+                            piste.Add(temp.people[i]);
+                            removeCount++;
                         }
-                        lastTime = timer;
+                        Console.WriteLine("-{0} have exited a cabin", removeCount);
+                        lastTime = clock;
                     }
                 }
             }
         }
-        static void pistesToQueue()
-        {
-            int shouldremove = 0;
+        static void pistesToQueue(){
             int lastTime = -1;
-            while (true)
-            {
-                lock (key)
-                {
-                    if (lastTime != timer)
-                    {
-                        foreach (var item in piste)
-                        {
-                            if (item.ArrivalAtQueue == timer)
-                            {
-                                shouldremove++;
-                                queue.Enqueue(item);
-                                Console.WriteLine("Skiier has landed and entered Queue");
+            while (true) {
+                lock (lockKey){
+                    if (lastTime != clock){
+                        int i=0;
+                        int removeCount = 0;
+                        while (i < piste.Count) {
+                            if (piste[i].ArrivalAtQueue == clock) {
+                                queue.Enqueue(piste[i]);
+                                piste.RemoveAt(i);
+                                removeCount++;
                             }
+                            else ++i;
                         }
-
-                        //for (int i = 0; i < shouldremove; i++)
-                        //{
-                        //    piste.Remove(piste[i]);
-                        //}
-
-                        lastTime = timer;
+                        if (removeCount>0)Console.WriteLine("-" + removeCount + " skiiers have arrived to queue.");
+                        lastTime = clock;
                     }
                 }
             }
         }
-        static readonly object key = new object();
-        static volatile int timer = 4;
-        static void time()
-        {
-            while (true)
-            {
-                lock (key)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    ++timer;
-                    Console.WriteLine(timer);
+        static void time(){
+            while (true){
+                lock (lockKey){
+                    Thread.Sleep(2000);
+                    ++clock;
+                    Console.Clear();
+                    Console.WriteLine("({0})",clock);
+                    Console.WriteLine("{0} in queue", queue.Count);
+                    for (int i = 0; i < printLift.Count(); i++) {
+                        Console.WriteLine("\t{0} people are in the {1}th cabin",printLift[i],i+1);
+                    }
+                    Console.WriteLine("\t\t{0} in piste", piste.Count);
+                    Console.WriteLine("-------\nEvents:\n");
                 }
             }
         }
