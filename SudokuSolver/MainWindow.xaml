@@ -6,6 +6,5 @@
         xmlns:local="clr-namespace:SudokuSolver"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="700">
-    <Label x:Name="label" Content="Sudoku Solver 2000" HorizontalAlignment="Left" Margin="120,30,0,0" VerticalAlignment="Top" FontSize="50"/>
-
+    <TextBox x:Name="Output" HorizontalAlignment="Left" FontSize="20" Height="455" Margin="86,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="531"/>
 </Window>
