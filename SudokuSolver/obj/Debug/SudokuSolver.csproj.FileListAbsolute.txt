@@ -1,0 +1,1 @@
+C:\Users\Zoli\EAL_CompSci\Small_Programs\SudokuSolver\SudokuSolver\bin\Debug\SudokuSolver.exe.config
